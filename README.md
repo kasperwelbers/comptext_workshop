@@ -1,14 +1,37 @@
-# comptext_workshop
+## Running your code in the cloud
 
-Material for Comptext workshop
+This repository contains an overview of possible things to do in the hands-on part of the workshop. It is intended as complementary material to the presentation, but where possible I repeated information in case you want to read it back later.
 
-## Using a deployment platform
+As mentioned in the presentation, there are many different possible paths to take here, and these intersect with a wide range of skills that you would need. So what is most relevant for you to focus on right now depends a lot on your current experience and goals. I thus figured that instead of making one single workshop tutorial, I'd just string together different things that you can explore, with references to other workshop material (from myself or others) where relevant.
 
-If you have never worked with
+If you don't really know where to get started, let me know and we'll work out a plan of attack together.
+
+# Using a online workspace
+
+The easiest way to run your code in the cloud is to just use an online workspace. By this I mean services for running your editor in a browser, like RStudio server (R) or Jupyter notebook (Python). This way, everything works pretty similar to how you would use it locally, but with two main benefits:
+
+- Since your actuall session is on a remote device, you can keep a process running when you close your laptop. So you can run your scraper or fit your model without worries. When you log back in, you can just continue where you left of. Sometimes you can even schedule timed scripts (e.g., daily scrapers), for instance using Jupyter Scheduler.
+- The remote device could have better hardware than your laptop. This is particularly relevant when working with LLMs, because you'll want to use a good GPU.
+
+There are broadly speaking two ways to get started with a online workspace. One is to just pay for a service, like RStudio Cloud or Google Colab (runs Jupyter notebook for both Python and R). Depending on what you want to, this can range from cheap to very expensive, depending on the hardware that you need. If you just need to run a light process, like a webscraper, you can just use a cheap option. For deep learning, you will probably need to slurge a bit on GPU time. If you want to try this out right now, I would recommend trying out [Google Colab](https://colab.research.google.com/). It comes with a generous free-tier that includes enough GPU power for working with LLMs.
+
+The other approach is to set up a server yourself. As described below, this can be a bit of a hassle, but for setting up an online workspace this can really pay of in terms of costs. You can hook up your own desktop computer, or a server from your University, and host RStudio server or Jupyter notebook yourself. If you want to try this out right now, one way to go about it is to use a Digital Ocean droplet, as described below. But instead of creating a Droplet from scratch, you could just pick the RStudio or Jupyter Notebook image from the [Digital Ocean Marketplace](https://marketplace.digitalocean.com/category/data-science).
+
+# Using a deployment platform
+
+There are some things you cannot (easily) do via an online workspace. The most import thing being that you can't host an API or web application.
+
+Before, if you wanted to do any of these things, you had to set up your own server (as explained below). But today, there are great alternatives that make it easy to host services. More than just a convenience, this comes along with great features for making your projects safe, performant and maintainable. There's quite a variety of such _deployment platforms_, so it can be a bit overwhelming to find out which one suits your specific needs. But if you find one that works for you, you'll be able to move stuff to the cloud in a matter of minutes.
+
+One thing that you will need to keep in mind is that these platforms are often specialized for particular use cases. You don't get the same level of flexibility as you'd get by setting up your own server, and some things might not work well (or even work at all) on certain platforms. If you have a particular use case in mind and are not sure what platform might work, let me know and I might have some suggestions.
 
 ### The main thing you need to now: GitHub
 
-### Railway.app: effortless deployment of your GitHub respositories
+As relatively easy as these platforms might be, one thing that you DO need to know a bit about is git, and specifically GitHub. Many of these platforms use GitHub to deploy your code. An more importantly, if you are not already using git in some way, learning to do so should definitely be your first priority.
+
+We actually did a [workshop on git and GitHub](https://github.com/vanatteveldt/github-workshop?tab=readme-ov-file) before, so feel free to just switch to this workshop material if you feel this should be your priority now.
+
+In order to use the deployment platforms, you really only need to learn the very basics of git, namelijk [creating a repository](https://github.com/vanatteveldt/github-workshop/blob/main/tutorials/creating_and_cloning.md) and [pushing your code](https://github.com/vanatteveldt/github-workshop/blob/main/tutorials/add_commit_push_pull.md) to it. The more complicated features are mostly intended for writing code in teams, but you can mostly ignore those for now if you're just working on your own code individually.
 
 ### Vercel: deploying front-end applications, and/or lightweight backends
 
@@ -18,11 +41,25 @@ The main example that I show in the workshop is **Vercel**, which supports both 
 
 Accordingly, if you know that your application / API fits the constraints, Vercel (or similar platforms) can be a great option. There is also little to provide in terms of instructions, because its just that easy. Just go to [Vercel.com](https://vercel.com) and give it a shot.
 
-## Managing your own server
+### Railway.app: effortless deployment of your GitHub respositories
 
-_Before you get into this, I have to warn that this route is the diehard route. If you are just getting started with cloud stuff, I would recommend first playing around with a deployment platform like Railway.app. This will get you started doing usefull things much faster. I myself also do more and more stuff on via such platforms, because it's often easier to maintain, and can also be cheaper._
+Railway is a deployment platform that sits somewhere between a serverless platform like Vercel, and a virtual machine approach like Digital Ocean.
 
-If you want to play around with your own (virtual) server, there are several good providers that let you spin up a server in no time. I have had good experiences with Linode and Digital Ocean, which are quite comparable in terms of features and pricing. They also both seem to give you 100 bucks as a starting budget when you're new (though you will have to register a payment method).
+Like Vercel, setting up an application is as easy as linking up a GitHub repository. In many cases, Railway will even automatically detect how to deploy your code. For example, if you created a standard Flask Application in Python, Railway will recognize that it's a Python project, and automatically handle everything from installation to starting up the server. Railway also works on a pay-for-what-you-use basis. So instead of paying a fixed monthly fee, you only pay for how much memory, CPU and bandwidth you use.
+
+The benefit of Railway compared to Vercel is that it's not just for lightweight backends. So if you have long-running tasks such as a webscraper, you won't run into any timeout limits. The downside compared to Vercel is that it's not as specialized for public facing applications (though you can easily use it to host both your frontend and backend). Also, there is no free-tier. The hobby plan costs you 5 bucks per month, but you can then spend these costs on compute (and buy more credit if you need it.).
+
+The benefit compared to managing your own server, or Digital Ocean droplet (see below), is that you hardly need to manage anything. You can easily link up your GitHub repositories, and there is also a long list of [templates](https://railway.app/templates) to pick from (e.g. Jupyter lab, RStudio server, FastAPI).
+
+Note that Railway is primarily designed for hosting a service that keeps running and is available online, like an API or web application. It is less suited for just running a script one time.
+
+# Managing your own server
+
+_Before you get into this, I have to warn that this route is quite involved, and perhaps not the most relevant for you. If you are just getting started with cloud stuff, I would recommend first playing around with a deployment platform like Railway.app. This will get you started doing usefull things much faster._
+
+The main benefit of managing your own server is that it gives the a lot of flexibility. Also, it can be a relatively cheap solution, especially if you can get a (virtual) server for free/cheap from your university, or if you just hook up an old computer. This does come at the price of complexity though. If you just want a place to run your own scripts, like web scrapers or training models, this is not a big problem. But if you want to host a public API or conduct online experiments, you'll need to think about stability and security, which can be quite complicated.
+
+A good place to start with playing around with your own server, is by getting a virtual server from a hosting provider. This can also take care of some of the complexity for you (like backups). There are several good providers that let you spin up a server in no time. I have had good experiences with Linode and Digital Ocean, which are quite comparable in terms of features and pricing. They also both seem to give you 100 bucks as a starting budget when you're new (though you will have to register a payment method).
 
 I think DigitalOcean is a bit more beginner friendly, so let's go with that.
 
