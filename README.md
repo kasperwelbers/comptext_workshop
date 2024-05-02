@@ -25,7 +25,7 @@ Before, if you wanted to do any of these things, you had to set up your own serv
 
 One thing that you will need to keep in mind is that these platforms are often specialized for particular use cases. You don't get the same level of flexibility as you'd get by setting up your own server, and some things might not work well (or even work at all) on certain platforms. If you have a particular use case in mind and are not sure what platform might work, let me know and I might have some suggestions.
 
-### The main thing you need to now: GitHub
+### The main thing you need to know: GitHub
 
 As relatively easy as these platforms might be, one thing that you DO need to know a bit about is git, and specifically GitHub. Many of these platforms use GitHub to deploy your code. An more importantly, if you are not already using git in some way, learning to do so should definitely be your first priority.
 
